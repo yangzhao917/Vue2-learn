@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2.初识Vue</title>
+    <!-- 引入Vue.js -->
+    <script type="text/javascript" src="../js/vue.js"></script>
+</head>
+<body>
+
+    <!-- 创建一个容器 -->
+    <!-- 
+        js表达式和js代码（语句）
+        1.表达式：一个表达式会产成一个值，可以放在任何一个需要值的地方：
+            1). a
+            2). a + b
+            3). demo(1)
+            4). x === y ? '1' : '2'
+        2.js代码（语句）
+            1). if(){}
+            2). for(){}
+        
+        {{xxx}}中的xxx要写js表达式，且xxx可以自动读取到data中的所有属性，一旦data中的数据发生改变，那么页面中用到该数据的地方也会自动更新
+    -->
+    <div id="root">
+        <p>hello，{{name}}</p>
+        <p>今天是：{{Date.now()}}</p>
+    </div>
+
+</body>
+<script type="text/javascript">
+
+    Vue.config.productionTip = false    //阻止Vue在启动时生成生产提示
+
+    // 创建Vue实例
+    var vm = new Vue({
+        //el是element的缩写，表示将该Vue实例绑定到ID为root的容器上，也可以用document.getElementById('root')表示
+        //Vue中一个实例只能对应一个容器
+        el: '#root',
+        //data中用于存放数据，存放的数据由el属性所绑定的容器使用
+        data: {
+            name: '乔布斯'
+        }
+    })
+</script>
+</html>
