@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3.模板语法</title>
+    <script type="text/javascript" src="../js/vue.js"></script>
+</head>
+<body>
+    <!-- 
+    模板语法：
+    1.插值语法
+        功能：用于解析标签体内的内容
+        写法：{{xxx}}，xxx是js表达式，且可以直接读取到data中的所有属性
+    2.指令语法
+        功能：用于解析标签（标签属性，标签体内容，绑定事件...）
+        例子：v-bind:href="baiduUrl"可以简写为:href="baiduUrl"，xxx可以直接读取到data中的所有属性
+    -->
+    <div id="root">
+        <h3>插值语法</h3>
+        <p>hello，{{name}}</p>
+        <p>姓名：{{person.name}},年龄：{{person.age}},地区：{{person.address}}</p>
+        <h3>指令语法</h3>
+        <p><a v-bind:href="baiduUrl">点我到百度</a></p>
+        <p><a :href="bingUrl">点我到Bing</a></p>
+    </div>
+</body>
+<script type="text/javascript">
+
+    Vue.config.productionTip = false    //阻止Vue在启动时生成生产提示
+
+    // 创建Vue实例
+    var vm = new Vue({
+        el: '#root',
+        data: {
+            name: 'Charels',
+            baiduUrl: "https://baidu.com",
+            bingUrl: 'https://bing.com',
+            person: {
+                name: '张三',
+                age: 19,
+                address: '中国上海'
+            }
+        }
+    })
+</script>
+</html>
