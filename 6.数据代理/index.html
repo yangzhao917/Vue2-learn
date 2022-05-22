@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>6.数据代理</title>
+    <script type="text/javascript" src="../js/vue.js"></script>
+</head>
+<body>
+    <div id="root" style="text-align: center;">
+        <h2>数据代理图示</h2>
+        <img src="数据代理图示.jpg" alt="数据代理图示.jpg" style="width: 600px;">
+    </div>
+</body>
+<script type="text/javascript">
+
+    Vue.config.productionTip = false    //阻止Vue在启动时生成生产提示
+
+    // ================================ 数据代理 ===================================== //
+    // 数据代理：通过一个对象代理对另一个对象中属性的操作
+    // 数据代理：
+    //  Vue中的数据代理：通过vm对象来代理data对象中属性的操作(读/写) 
+    //  Vue中数据代理的好处：更加方便的操作data中的数据
+    // 基本原理：
+    //  1：通过Object.defineProperty()把data对象中所有属性添加到vm上；
+    //  2：为每一个添加到vm上的属性，都指定一个getter/setter方法；
+    //  3：在getter/setter内部去操作(读/写)data中对应的属性；
+
+    let obj = {x: 100}
+    let objProxy = {y: 200}
+
+    Object.defineProperty(objProxy, 'x', {
+        get(){
+            return obj.x;
+        },
+        set(value){
+            obj.x = value;
+        }
+    })
+    
+    // ============================ Object.defineProperty ========================== //
+    // 定义并初始化一个phone
+    let phone = 110;
+
+    let person = {
+        name: '李四',
+        age: 18,
+        area: '中国上海'
+    }
+
+    // Object.defineProperty() 方法会直接在一个对象上定义一个新属性，或者修改一个对象的现有属性，并返回此对象。
+    // 参考：https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperty
+    Object.defineProperty(person, 'phone', {
+        // value: 18772283232,
+        // enumerable: true,   // 控制属性是否可以枚举，默认值false    可以被Object.keys(person)遍历
+        // writable: true, // 控制属性是否可以被修改，默认值false      可以被person.phone = 11111修改
+        // configurable: true  //属性是否可以被删除，默认值false      可以被delete person.phone删除
+
+        // 当有人读取person的phone属性时，getter函数就会被调用，且返回值就是phone的值
+        get(){
+            console.log("phone被读取了")
+            return phone;
+        },
+        // 当有人修改person的phone属性时，setter函数就会被调用，且会收到修改的具体值
+        set(value){
+            console.log("phone被修改了,value:",value)
+            phone = value;
+        }
+    })
+
+    // 获取person对象
+    // console.log(person)
+</script>
+</html>
