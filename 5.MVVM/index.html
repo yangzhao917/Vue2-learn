@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>5.Vue中的MVVM</title>
+    <script type="text/javascript" src="../js/vue.js"></script>
+</head>
+<body>
+    <div id="root">
+        <p>姓名：{{name}}</p>
+        <p>年龄：{{age}}</p>
+        <p>性别：{{sex == 1 ? '男' : '女'}}</p>
+    </div>
+</body>
+<script type="text/javascript">
+
+    Vue.config.productionTip = false    //阻止Vue在启动时生成生产提示
+
+    // 创建Vue实例
+    const vm = new Vue({
+        data(){
+            console.log('@@@', this) // 此处的this是Vue的实例对象
+            return {
+                name: '张三',
+                age: 20,
+                sex: 1
+            }
+        }
+    })
+    // el绑定容器的第二种写法
+    vm.$mount('#root')
+</script>
+</html>
