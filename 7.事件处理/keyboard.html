@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>键盘事件</title>
+    <script type="text/javascript" src="../js/vue.js"></script>
+</head>
+<body>
+    <div id="root">
+        <h2>事件处理</h2>
+
+        <!-- 
+            常用按键别名：
+            回车 => enter
+            删除 => delete（捕获“删除”和“退格”键）
+            退出 => esc
+            空格 => space
+            换行 => tab
+            上 => up
+            下 => down
+            左 => left
+            右 => right 
+
+            系统修饰键：ctrl、alt、shift、meta(键盘徽标键)、tab
+            系统修饰键需要
+                配合keyup使用：按下修饰键的同事，再按下其他组合键，随后释放该组合键，事件才会被触发，比如：按住ctrl + 按住i，再释放i
+                配合keydown使用：正常触发事件
+        -->
+        <p>
+            <label for="context">请输入内容：</label>
+            <!-- @keyup.enter被称为按键别名 -->
+            <input type="text" v-model="context" placeholder="按回车提示输入" @keyup.enter="getInputValue" >
+        </p>
+    </div>
+</body>
+<script type="text/javascript">
+    Vue.config.productionTip = false    //阻止Vue在启动时生成生产提示
+
+    Vue.config.keyCodes.delete = 13 // 定义别名按键，按键名为delete，编码为13（如有需求，可以使用，但不推荐）
+
+    var vm = new Vue({
+        el: '#root',
+        data: {
+            context: ''
+        },
+        methods: {
+            getInputValue(event){
+                
+                console.log(event.key, event.keyCode)  // event.key 获取键盘按键名称，event.keyCode 获取键盘按键编码
+
+                // 获取回车后的输入内容（回车按键编码 13）
+                // if(event.keyCode == 13)
+                //     console.log(event.target.value) // 获取元素的value
+
+                console.log(event.target.value) // 获取元素的value
+            }
+        },
+    })
+</script>
+</html>

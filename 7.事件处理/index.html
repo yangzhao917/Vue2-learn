@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>事件处理</title>
+    <style>
+        #root a{display: block; margin-top: 15px;}
+
+        #bubble{
+            width: 150px; 
+            height: 80px; 
+            background-color: aquamarine; 
+            margin-top: 20px;
+        }
+
+        #bubble button{
+            width: 100px; 
+            height: 40px; 
+            background-color: aqua;
+            margin: 20px 20px;
+        }
+        
+        button {margin-top: 20px;}
+
+    </style>
+    <script type="text/javascript" src="../js/vue.js"></script>
+</head>
+<body>
+    <div id="root">
+        <h2>事件处理</h2>
+        <!-- =============================== 基本使用 ================================= -->
+        <!-- 普通写法 -->
+        <p v-on:click="message">点我提示信息</p>
+
+        <!-- 简单写法 -->
+        <p @click="getName('张三', $event)">点我获取姓名</p>
+        <button @click="getWindowObj">点我获取window对象</button>
+
+        <!-- =============================== 事件修饰符 ================================= -->
+        <h2>事件修饰符</h2>
+        <!-- @click.prevent 阻止点击事件后的默认事件行为，prevent就是事件修饰符 -->
+        <a v-bind:href="baiduUrl" @click.prevent="jumpBaidu">点我到百度</a>
+
+        <!-- @click.stop 阻止点击事件后，触发其父容器的事件行为（事件冒泡） -->
+        <div @click="message" id="bubble">
+            <button @click.stop="message">事件冒泡</button>
+        </div>
+
+        <!-- @click.once 页面加载完后，事件只触发一次 -->
+        <button @click.once="message">事件只触发一次</button>
+
+    </div>
+</body>
+<script type="text/javascript">
+
+    Vue.config.productionTip = false    //阻止Vue在启动时生成生产提示
+
+    new Vue({
+        el: '#root',
+        data: {
+            baiduUrl: 'https://baidu.com'
+        },
+        // methods方法关键字，存放方法事件对象
+        methods: {
+            message(event){
+                // event.target.innerText 获取事件元素文本
+                console.log(event.target.innerText)
+                alert("今天是：" + new Date())
+            },
+            getName(name,event){
+                console.log(event.target.innerText)
+                alert('姓名:' + name)
+            },
+            getWindowObj:(event)=>{
+                // 获取的this对象为window对象
+                console.log(this)
+            },
+            jumpBaidu(e){
+                // e.preventDefault(); // 阻止默认行为
+                alert('访问百度');
+            }
+        },
+    })
+</script>
+</html>
