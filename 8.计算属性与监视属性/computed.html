@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>计算属性</title>
+    <script type="text/javascript" src="../js/vue.js"></script>
+</head>
+<body>
+    <div id="root">
+        <h2>计算属性-姓名案例</h2>
+        <p>
+            <label for="firstName">姓：</label>
+            <input type="text" name="" placeholder="请输入姓" id="firstName" v-model="firstName">
+        </p>
+        <p>
+            <label for="lastName">名：</label>
+            <input type="text" name="" placeholder="请输入名" id="lastName" v-model="lastName">
+        </p>
+        <!-- 
+            插值语法实现
+            缺点：如果要对firstName或lastName进行特殊处理，模板中的语句会变得比较复杂且难以维护
+            参考：https://cn.vuejs.org/v2/style-guide/#%E6%A8%A1%E6%9D%BF%E4%B8%AD%E7%AE%80%E5%8D%95%E7%9A%84%E8%A1%A8%E8%BE%BE%E5%BC%8F%E5%BC%BA%E7%83%88%E6%8E%A8%E8%8D%90
+         -->
+        <!-- <p>全名：<span>{{firstName}}-{{lastName}}</span></p> -->
+
+        <!-- 
+            方法实现
+            缺点：如果firstName或lastName的值发生改变，会引起vm.data数据发生改变，导致模板被重新解析，
+                getFullName()方法使用了插值语法，所以也会被重新调用。
+         -->
+        <!-- <p>全名：<span>{{getFullName()}}</span></p> -->
+
+        <!-- 
+            计算属性实现
+            计算属性是解决模板表达式"{{}}"中的js表达式过于复杂和难以维护的一个解决方案，因为属性是通过已存在属性（vm.data）的计算而得来的，所以称之为”计算属性“
+            底层实现：
+                计算属性底层实现借助了Object.defineProperty()方法提供的getter和setter
+            优势：
+                内部有缓存机制（可重复使用），效率相对于methods的实现性能更高，调试方便
+         -->
+        <p>全名：<span>{{fullName}}</span></p>
+    </div>
+</body>
+<script type="text/javascript">
+    Vue.config.productionTip = false    //阻止Vue在启动时生成生产提示
+
+    const vm = new Vue({
+        el: '#root',
+        data: {
+            firstName: '',
+            lastName: '',
+        },
+        // 计算属性配置对象
+        computed: {
+            // 计算属性名称
+            // fullName: {
+            //     // 当fullName被读取时，get就会被调用，且返回值就作为fullName的值
+            //     // 只有当第一次读取fullName和fullName被改变时，get才会被调用
+            //     get(){
+            //         console.log("computed get performed...")
+            //         return this.firstName + '-' + this.lastName;
+            //     }
+            //     // 如果不定义set，修改vm.fullName时就会出现"Computed property "fullName" was assigned to but it has no setter."的问题
+            //     // 当fullName被修改时，set就会被调用，且参数是修改的值，通常不会被使用到
+            //     // ,set(value){
+            //     //     console.log("computed set performed... value:", value)
+                    
+            //     //     // 重新给firstName和lastName赋值
+            //     //     const arr = value.split('-');
+            //     //     this.firstName = arr[0];
+            //     //     this.lastName = arr[1];
+            //     // }
+            // }
+
+            // 简写形式
+            fullName(){
+                console.log("computed get performed...")
+                return this.firstName + '-' + this.lastName;
+            }
+        },
+        methods: {
+            // getFullName(){
+            //     console.log("getFullName performed ...")
+            //     return this.firstName + '-' + this.lastName;
+            // }
+        },
+    })
+</script>
+</html>
