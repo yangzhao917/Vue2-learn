@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>条件渲染</title>
+    <script type="text/javascript" src="../js/vue.js"></script>
+</head>
+<body>
+    <div id="#root">
+        <h2>条件渲染</h2>
+
+        <!-- 
+            v-show：条件不为真隐藏 元素被加上：style="display: none;"
+            适用于切换频率较高的场景
+        -->
+        <button @click="number++">点我查看(v-show实现)</button>
+        <p v-show="number == 1">今天是周一</p>
+        <p v-show="number == 2">今天是周二</p>
+        <p v-show="number == 3">今天是周三</p>
+        <p v-show="number == 4">今天是周四</p>
+        <p v-show="number == 5">今天是周五</p>
+
+        <!-- 
+            v-if：条件不为真，则这个元素将不被渲染，页面DOM不可见
+            适用于切换频率较低的场景
+            v-if可以和v-else-if、v-else一起使用，v-else 元素必须紧跟在带 v-if 或者 v-else-if 的元素的后面，否则它将不会被识别。
+        -->
+        <button @click="count++">点我查看(v-if实现)</button>
+        <p v-if="count == 1">今天是周一</p>
+        <p v-else-if="count == 2">今天是周二</p>
+        <p v-else-if="count == 3">今天是周三</p>
+        <p v-else-if="count == 4">今天是周四</p>
+        <p v-else>今天是周五</p>
+
+        <!-- 最终的渲染结果将不包含 <template> 元素。 -->
+        <template v-if="isShow">
+            <h3>Title</h1>
+            <p>Paragraph 1</p>
+            <p>Paragraph 2</p>
+        </template>
+    </div>
+    </div>
+</body>
+<script type="text/javascript">
+    Vue.config.productionTip = false    //阻止Vue在启动时生成生产提示
+
+    var vm = new Vue({
+        el: '#root',
+        data: {
+            isShow: true,
+            count: 1,
+            number: 1
+        },
+        watch:{
+            count: function(val){
+                if(val > 5) this.count = 1
+            },
+            number: function(val){
+                if(val > 5) this.number = 1
+            }
+        }
+    })
+</script>
+</html>
