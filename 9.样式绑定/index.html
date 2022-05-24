@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>class与style样式绑定</title>
+    <style>
+        body{margin: 0px; padding: 0px;}
+
+        .basic{
+            width: 400px;   /*设置宽度*/
+            height: 50px;  /*设置高度*/
+            border: 1px solid blue;    /*设置边框属性*/
+            text-align: center; /*设置文本居中*/
+            margin-bottom: 10px;
+        }
+
+        .yellowToRed{
+            background-image: linear-gradient(to right, yellow, red);   /*设置线性渐变*/
+        }
+
+        .greenToBlue{
+            background-image: linear-gradient(to right, green, blue);
+        }
+
+        .redius{
+            border-radius: 25px;    /*设置边框圆角*/
+        }
+    </style>
+    <script type="text/javascript" src="../js/vue.js"></script>
+</head>
+<body>
+    <div id="root">
+        <!-- :class="classObj.mood" 绑定class样式 使用场景：样式名不确定，需要动态指定-->
+        <div class="basic" :class="classObj.mood" @click="changeMood" >class样式绑定-绑定样式-</div>
+
+        <!-- :class="classObj.classArray" 绑定class样式 使用场景：样式名个数不确定，样式名也不确定-->
+        <div class="basic" :class="classObj.classArray" @click="changeMoodArray" >class样式绑定-数组形式</div>
+
+        <!-- :class="classObj.classObj" 绑定class样式 使用场景：样式名个数确定，样式名确定，但需要动态判断是否使用-->
+        <div class="basic" :class="classObj.classObj" >class样式绑定-对象形式</div>
+
+        <!-- :style="styleObj" 绑定style样式：对象形式 -->
+        <div class="basic" :style="styleObj" >style样式绑定-对象形式</div>
+
+        <!-- :style="[styleObj,{borderRadius: '50px'}]" 绑定style样式：数组形式 -->
+        <div class="basic" :style="[styleObj,{borderRadius: '50px'}]" >style样式绑定-数组形式</div>
+    </div>
+</body>
+<script type="text/javascript">
+    Vue.config.productionTip = false
+
+    var vm = new Vue({
+        el: '#root',
+        data: {
+            classObj: {
+                mood: 'yellowToRed',
+                classArray: [],
+                classObj: {
+                    yellowToRed: true,
+                    greenToBlue: true,
+                    grayToRed: false
+                }
+            },
+            styleObj: {
+                fontSize: '20px',
+                color: 'red',
+                backgroundColor: 'green'
+            }
+        },
+        methods: {
+            changeMood(){
+                this.classs.mood = 'greenToBlue'
+            },
+            changeMoodArray(){
+                // 通过随机数获取索引内容
+                if(this.classObj.classArray.length > 2) this.classObj.classArray = [];
+                const arr = ['yellowToRed', 'greenToBlue', 'redius'];
+                this.classObj.classArray.push(arr[Math.floor(Math.random() * 3)]);
+            }
+        },
+    })
+</script>
+</html>
