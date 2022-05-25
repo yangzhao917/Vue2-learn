@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>列表渲染</title>
+    <style>
+        table{width: 500px; }
+        td,th{border: 1px solid black; text-align: center;}
+    </style>
+    <script type="text/javascript" src="../js/vue.js"></script>
+</head>
+<body>
+    <div id="root">
+        <h2>基本列表展示</h2>
+        <table>
+            <tr>
+                <th>ID</th><th>姓名</th><th>年龄</th><th>性别</th>
+            </tr>
+            <!-- 遍历数组对象 -->
+            <tr v-for="(p,index) in personList" :key="p.id">
+                <td>{{p.id}}</td><td>{{p.name}}</td><td>{{p.age}}</td><td>{{p.sex === 1? '男' : '女'}}</td>
+            </tr>
+        </table>
+
+        <h2>对象展示</h2>
+        <ul>
+            <!-- 遍历对象 -->
+            <li v-for="(val,key) in car">{{key}}：{{val}}</li>
+        </ul>
+
+        <h2>过滤列表</h2>
+        <label for="">请输入：</label>
+        <input type="text" name="" id="" placeholder="姓名" v-model="keyWord">
+        <button @click="sortType = 1">升序</button>
+        <button @click="sortType = 2">降序</button>
+        <table>
+            <tr>
+                <th>ID</th><th>姓名</th><th>年龄</th><th>性别</th>
+            </tr>
+            <!-- 过滤列表-监视实现 -->
+            <!-- 
+                <tr v-for="(p,index) in filterPersonList" :key="p.id">
+                    <td>{{p.id}}</td><td>{{p.name}}</td><td>{{p.age}}</td><td>{{p.sex === 1? '男' : '女'}}</td>
+                </tr>
+            -->
+
+            <!-- 过滤列表-计算实现 -->
+            <tr v-for="(p,index) in filterPerson" :key="p.id">
+                <td>{{p.id}}</td><td>{{p.name}}</td><td>{{p.age}}</td><td>{{p.sex === 1? '男' : '女'}}</td>
+            </tr>
+           
+        </table>
+    </div>
+</body>
+<script type="text/javascript">
+    Vue.config.productionTip = false    //阻止Vue在启动时生成生产提示
+
+    var vm = new Vue({
+        el: '#root',
+        data: {
+            sortType: 1,    //  排序类型：1-升序(默认)；2-降序
+            keyWord: '',
+            personList: [
+                {id: 1, name: '张三', age: 18, sex: 1},
+                {id: 2, name: '李四', age: 22, sex: 0},
+                {id: 6, name: '李宁', age: 23, sex: 0},
+                {id: 7, name: '李先念', age: 35, sex: 1},
+                {id: 3, name: '王五', age: 43, sex: 1},
+                {id: 4, name: '张三丰', age: 24, sex: 1},
+                {id: 5, name: '张无忌', age: 87, sex: 1},
+            ],
+            // filterPersonList: [], // 存储过滤结果 监视实现
+            car: {
+                '名称': '奥迪',
+                '价格': '70W',
+                '颜色': '黑色'
+            }
+        },
+        watch: {
+            // 监视属性实现姓名过滤
+            keyWord: {
+                immediate: true,
+                handler(val){
+                    // console.log('new value:', val)
+                    this.filterPersonList = this.personList.filter((person)=>{
+                        return person.name.indexOf(val) != -1;
+                    })
+                }
+            }
+        },
+        computed: { // 计算属性实现姓名过滤
+            filterPerson: function() {
+                const filterArray = this.personList.filter((person)=>{
+                    return person.name.indexOf(this.keyWord) != -1;
+                })
+                return filterArray.sort((val1, val2) => {
+                    return this.sortType === 1? val1.age - val2.age : val2.age - val1.age;
+                })
+            }
+        }
+    })
+</script>
+</html>
