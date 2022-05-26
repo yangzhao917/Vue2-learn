@@ -25,16 +25,20 @@
         </table>
 
         <h2>对象展示</h2>
+        <input type="text" name="" id="" v-model="property.propertyName" placeholder="请输入属性名">
+        <input type="text" name="" id="" v-model="property.propertyVal" placeholder="请输入属性值">
+        <button @click="addObjProperty">添加一个属性(Vue.set)</button>
         <ul>
             <!-- 遍历对象 -->
             <li v-for="(val,key) in car">{{key}}：{{val}}</li>
+
+            <li v-for="(val,key) in person">{{key}}：{{val}}</li>
         </ul>
 
         <h2>过滤列表</h2>
         <label for="">请输入：</label>
         <input type="text" name="" id="" placeholder="姓名" v-model="keyWord">
-        <button @click="sortType = 1">升序</button>
-        <button @click="sortType = 2">降序</button>
+        <button @click="sort.sortType === 1? sort.sortType = 2: sort.sortType = 1">{{sort.sortTypeName}}</button>
         <table>
             <tr>
                 <th>ID</th><th>姓名</th><th>年龄</th><th>性别</th>
@@ -60,7 +64,14 @@
     var vm = new Vue({
         el: '#root',
         data: {
-            sortType: 1,    //  排序类型：1-升序(默认)；2-降序
+            sort: {
+                sortType: 1,    //  排序类型：1-升序(默认)；2-降序
+                sortTypeName: '升序',   // 排序名称
+            },
+            property: {
+                propertyName: '',
+                propertyValue: '',
+            },
             keyWord: '',
             personList: [
                 {id: 1, name: '张三', age: 18, sex: 1},
@@ -76,6 +87,11 @@
                 '名称': '奥迪',
                 '价格': '70W',
                 '颜色': '黑色'
+            },
+            person: {
+                name: '王同学',
+                age: 20,
+                address: '中国上海闵行区'
             }
         },
         watch: {
@@ -95,11 +111,34 @@
                 const filterArray = this.personList.filter((person)=>{
                     return person.name.indexOf(this.keyWord) != -1;
                 })
-                return filterArray.sort((val1, val2) => {
-                    return this.sortType === 1? val1.age - val2.age : val2.age - val1.age;
+
+                // 根据年龄升序/降序
+                filterArray.sort((val1, val2) => {
+                    var result = '';
+                    if(this.sort.sortType === 1){
+                        result = val1.age - val2.age;
+                        this.sort.sortTypeName = '升序';
+                    }else{
+                        result = val2.age - val1.age
+                        this.sort.sortTypeName = '降序';
+                    }
+                    return result;
                 })
+
+                return filterArray;
             }
-        }
+        },methods: {
+            addObjProperty: function(){
+                let propertyName = this.property.propertyName;
+                let propertyVal = this.property.propertyVal;
+                console.log(propertyName, propertyVal)
+                if(propertyName == "" || propertyVal == ""){
+                    alert('请输入属性信息')
+                    return;
+                }
+                Vue.set(this.person, propertyName, propertyVal);
+            }
+        },
     })
 </script>
 </html>

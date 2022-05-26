@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>总结Vue数据监测</title>
+    <style>
+        table{width: 500px; }
+        td,th{border: 1px solid black; text-align: center;}
+        button{margin-left: 10px}
+    </style>
+    </style>
+    <script type="text/javascript" src="../js/vue.js"></script>
+</head>
+<body>
+    <!-- 
+        Vue监视数据的原理：
+            Vue会监视data中所有层次的数据
+            
+            Vue怎么监测对象中的数据？
+                通过setter实现监视，且要在new Vue时就传入要监测的数据
+                1).对象中后追加的属性，Vue默认不做响应式处理
+                2).如果需要给后添加的属性做响应式，需要使用下面的API：
+                    Vue.set(target, propertyName/index, value)
+                    vm.$set(target, propertyName/index, value)
+            
+            怎么监测数组中数据？
+                通过包裹数组更新元素的方法实现，本质做了两件事：
+                    1).通过调用原生对应的方法对数组进行更新；
+                    2).重新解析模板，进而更新页面
+
+            Vue修改数组中某个元素要使用下面的方法：
+                向数组的末尾添加一个或更多元素，并返回新的长度：push()、
+                删除数组的最后一个元素并返回删除的元素：pop()、
+                删除并返回数组的第一个元素：shift()、
+                向数组的开头添加一个或更多元素，并返回新的长度：unshift()、
+                从数组中添加或删除元素：splice()、
+                对数组的元素进行排序：sort()、
+                反转数组的元素顺序：reverse()
+
+                Vue.set()/vm.$set() 
+    -->
+    <div id="root">
+        <span>年龄是：{{person.age}}</span><button @click="person.age++">年龄加一岁</button><br>
+
+        <input type="text" name="" id="" v-model="sex" placeholder="请输入性别"><button @click="addSex">添加性别属性</button>
+        <p>性别是：{{person.sex}}</p>
+
+        <p>爱好：<span v-for="h in person.hobby">{{h}}、</span></p>
+        <button @click="addHobby">添加一个爱好</button>
+        <button @click="updateHobby">修改第一个爱好</button>
+
+        <p>操作：</p>
+        <ul>
+            <li>
+                <button @click="addFirends">列表首位添加一个朋友</button>
+            </li>
+            <li>
+                <button @click="updateFirstFirendName">修改第一个朋友的名字</button>
+            </li>
+        </ul>
+        <table>
+            <tr>
+                <td>姓名</td><td>年龄</td><td>性别</td>
+            </tr>
+            <tr v-for="p in person.friends" :key="p.id">
+                <td>{{p.name}}</td><td>{{p.age}}</td><td>{{p.sex}}</td>
+            </tr>
+        </table>
+    </div>
+</body>
+<script>
+    Vue.config.productionTip = false
+
+    const vm = new Vue({
+        el: '#root',
+        data: {
+            sex: '',
+            person: {
+                age: 19,
+                hobby: ['听音乐','阅读','爬山'],
+                friends: [
+                    {name: '张三', age: 18, sex: '男'}
+                ]
+            }
+        },
+        methods: {
+            addSex: function(){
+                var sex = this.sex;
+                if(sex == ""){
+                    alert("请输入性别");
+                    return;
+                }
+                Vue.set(this.person, 'sex', this.sex);
+            },
+            addFirends: function(){
+                this.person.friends.unshift({name: '李思', age: 24, sex:'女'});
+            },
+            updateFirstFirendName: function(){
+                this.person.friends[0].name = '王武'
+            },
+            addHobby: function(){
+                this.person.hobby.push('打游戏');
+            },
+            updateHobby: function(){
+                // this.person.hobby.splice(0, 1 ,'游泳')
+                this.$set(this.person.hobby, 0, '游泳') //等同于Vue.set
+            }
+        }
+    })
+</script>
+</html>
