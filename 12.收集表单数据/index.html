@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>收集表单数据</title>
+    <style>
+        table{width: 500px; }
+        td,th{border: 1px solid black; text-align: center;}
+    </style>
+    <script type="text/javascript" src="../js/vue.js"></script>
+</head>
+<body>
+    <!-- 
+        input type="checkbox"时:
+            1.如果没有配置input的value属性，那么收集的就是checked(布尔值);
+            2.配置input的value属性情况下：
+                1).v-model的初始值是非数组，那么收集的就是checked(布尔值);
+                2).v-model的初始值是数组，那么收集的就是value组成的数组；
+        v-model的三个修饰符:
+            lazy:失去焦点再收集数据；
+            number:输入字符串转为有效的数字；
+            trim：过滤首尾空格
+    -->
+    <div id="root">
+        <h2>收集表单数据</h2>
+        <form @submit="submitForm">
+        <table>
+            <tr>
+                <td><label for="account">账号：</label></td><td><input type="text" name="" id="account" v-model.trim="userInfo.account"></td>
+            </tr>
+            <tr>
+                <td><label for="password">密码：</label></td><td><input type="password" name="" id="password" v-model.trim="userInfo.password"></td>
+            </tr>
+            <tr>
+                <td><label for="sex">性别：</label></td>
+                <td>
+                    <input type="radio" value="男" name="sex" v-model="userInfo.sex">男
+                    <input type="radio" value="女" name="sex" v-model="userInfo.sex">女
+                </td>
+            </tr>
+            <tr>
+                <td><label for="age">年龄：</label></td>
+                <td><input type="number" v-model.number="userInfo.age" id="age"></td>
+            </tr>
+            <tr>
+                <td><爱好：</td>
+                <td>
+                    <input type="checkbox" value="travel" v-model="userInfo.hobby">旅游
+                    <input type="checkbox" value="readBook" v-model="userInfo.hobby">阅读
+                    <input type="checkbox" value="climb" v-model="userInfo.hobby">爬山
+                    <input type="checkbox" value="swim" v-model="userInfo.hobby">游泳
+                </td>
+            </tr>
+            <tr>
+                <td>所属校区：</td>
+                <td>
+                    <select v-model="userInfo.campus">
+                    <option value="">请选择</option>
+                    <option value="Beijing">北京</option>
+                    <option value="Shanghai">上海</option>
+                    <option value="Guangzhou">广州</option>
+                    <option value="Shenzhen">深圳</option>
+                  </select>
+                </td>
+            </tr>
+            <tr>
+                <td>其他信息：</td>
+                <td>
+                    <textarea name="" id="" cols="30" rows="5" v-model.trim.lazy="userInfo.otherInfo"></textarea>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">阅读并接受<a href="https://baidu.com">《用户协议》</a><input type="checkbox" name="" id="" v-model="userInfo.agree"></td>
+            </tr>
+            <tr>
+                <td colspan="2"><button type="submit">提交</button></td>
+            </tr>
+        </table>
+        </form>
+    </div>
+</body>
+<script>
+    Vue.config.productionTip = false
+
+    const vm = new Vue({
+        el: '#root',
+        data: {
+            userInfo: {
+                account: '',    // 账号
+                password: '',   // 密码
+                sex: '',    // 性别
+                age: '',    // 年龄
+                hobby: [],  // 爱好
+                campus: '',  // 所属校区
+                otherInfo: '',   // 其他信息
+                agree:''   // 是否接受协议
+            }
+        },methods: {
+            submitForm: function(){
+                var formJson = JSON.stringify(this.userInfo)
+                console.log('FormData',formJson)
+            }
+        },
+    })
+</script>
+</html>
