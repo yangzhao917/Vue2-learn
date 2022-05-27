@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>过滤器</title>
+    <script type="text/javascript" src="../js/vue.js"></script>
+    <script type="text/javascript" src="../js/dayjs.min.js"></script>
+</head>
+<body>
+
+    <!-- 
+    过滤器：
+        定义：对要显示的数据进行特定格式化后再显示(适用于一些简单逻辑的处理)
+        语法：
+            1.注册过滤器：Vue.filter(name, callback)或new Vue(filters:{});
+            2.使用过滤器：{{xxx | 过滤器名}} 或 v-bind:属性 = "xxx | 过滤器名"
+        备注：
+            1.过滤器也可以接收额外参数、多个过滤器也可以串联；
+            2.并没有改变原本的数据，是产生新的对应的数据;
+     -->
+    <div id="root">
+        <!-- 计算属性实现 -->
+        <p>现在是：{{formatTime}}</p>
+
+        <!-- 方法实现 -->
+        <p>现在是：{{getFormatTime()}}</p>
+
+        <!-- 过滤器实现 -->
+        <p>现在是：{{time | timeFormater}}</p>
+
+        <!-- 带参过滤器 -->
+        <p>现在是(filter)：{{time | timeFormater('YYYY年MM月DD日')}}</p>
+
+        <p>{{time | timeFormater | globalSlice}}年</p>
+    </div>
+</body>
+<script>
+    Vue.config.productionTip = false
+
+    // 定义全局过滤器
+    Vue.filter('globalSlice', function(value){
+        return value.slice(0,4);
+    })
+
+    new Vue({
+        el: '#root',
+        data: {
+            time: ''
+        },
+        computed: {
+            formatTime: function(){
+                return dayjs().format('YYYY-MM-DD HH:mm:ss');
+            }
+        },
+        methods: {
+            getFormatTime: function(){
+                return dayjs().format('YYYY-MM-DD HH:mm:ss');
+            }
+        },
+        // 过滤器配置对象(局部过滤器)
+        filters: {
+            // 定义一个timeFormater过滤器
+            timeFormater: function(val, formatStr='YYYY-MM-DD HH:mm:ss'){
+                return dayjs().format(formatStr);
+            },
+            // slice: function(val){
+            //     return val.slice(0,4);
+            // }
+        }
+    })
+</script>
+</html>
