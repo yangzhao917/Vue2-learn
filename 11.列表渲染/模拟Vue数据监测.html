@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>模拟Vue数据监测</title>
+</head>
+<body>
+    
+</body>
+<script>
+
+    // 定义数据对象
+    let data = {
+        name: '张三',
+        age: 18,
+        address: '中国上海'
+    }
+
+    // 创建一个监视实例对象
+    const obServer = new ObServer(data);
+    console.log(obServer);
+
+    // 定义一个vm实例对象
+    let vm = {}
+    vm._data = data = obServer;
+
+    // 监视实例对象，用于监视data中的属性编号（观察者模式）
+    function ObServer(obj){
+        // 汇总对象中所有的属性转换成数组
+        const keys = Object.keys(obj);
+
+        // 遍历对象
+        keys.forEach((key)=>{
+            Object.defineProperty(this, key, {
+                get(){
+                    return obj[key];
+                },
+                set(value){
+                    obj[key] = value;
+                }
+            })
+        })
+    }
+
+</script>
+</html>
