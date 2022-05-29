@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>内置命令</title>
+    <script type="text/javascript" src="../js/vue.js"></script>
+</head>
+<body>
+    
+    <div id="root">
+        <!-- v-bind：单向绑定解析表达式，可简写为':xxx' -->
+        <a :href="baiduUrl">点我跳转到Baidu</a>
+
+        <!-- 向节点中渲染包含html结构的内容，会替换掉节点中的内容 -->
+        <div v-html="username">你好,{{name}}</div>
+
+        <!-- 往所在节点中渲染文本内容，并会替换掉节点中的内容 -->
+        <div v-text="name">你好，</div>
+
+        <!-- v-model：双向数据绑定 -->
+        <input type="text" v-model="userName"> value：{{userName}}
+
+        <!-- v-for：遍历数组/对象/字符串 -->
+        <ul>
+            <li v-for="user in userList" :key="user.id">{{user.id}}-{{user.name}}-{{user.age}}-{{user.address}}</li>
+        </ul>
+
+        <!-- v-on：绑定事件监听，可简写为'@' -->
+        <p @click="say">点我获取欢迎信息</p>
+
+        <!-- v-if：条件渲染 -->
+        <button @click="getCount">点我查看星期几</button>
+        <p v-if="count == 1">今天是周一</p>
+        <p v-else-if="count == 2">今天是周二</p>
+        <p v-else-if="count == 3">今天是周三</p>
+        <p v-else-if="count == 4">今天是周四</p>
+        <!-- v-else：条件渲染 -->
+        <p v-else>今天是周五</p>
+        
+        <!-- v-show：条件渲染 -->
+        <p v-show="count">角色是：{{name}}</p>
+    </div>
+    
+</body>
+<script>
+    
+    Vue.config.productionTip = false
+
+    var vm = new Vue({
+        el: '#root',
+        data: {
+            username: '<span style="color:red">李思思</span>',
+            name: '李思思',
+            userName: '',
+            userList: [
+                {id:1,name:'张三',age:14,address:'中国上海'},
+                {id:2,name:'李四',age:16,address:'中国上海'},
+                {id:3,name:'王五',age:20,address:'中国上海'}
+            ],
+            count: 1,
+            baiduUrl: 'https://www.baidu.com'
+        },
+        methods: {
+            say: function(){
+                alert("欢迎学习内置命令...")
+            },
+            getCount: function(){
+                if(this.count > 5){
+                    this.count = 1
+                }else{
+                    this.count++;
+                }
+            }
+        },
+    })
+</script>
+</html>
