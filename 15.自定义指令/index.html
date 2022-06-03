@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>自定义指令</title>
+    <script type="text/javascript" src="../js/vue.js"></script>
+</head>
+<body>
+    <div id="root">
+        <p>{{name}}</p>
+        <p>当前x值：<span v-text="x"></span></p>
+        
+        <!-- 
+            指定定义时不加v-，但使用时要加v-；
+            指令名如果是多个单词，要使用kebab-case命名方式，不要用驼峰命名方式 
+        -->
+        <p>乘10倍后的x值：<span v-big="x"></span></p>
+        <button @click="x++" style="display: block;">点我加1</button>
+        <p>x：<input type="text" name="" id="" v-fbind:value="x" readonly></p>
+    </div> 
+</body>
+<script>
+    Vue.config.productionTip = false
+
+    // 定义全局指令
+    Vue.directive('big', function(element, binding){
+        element.innerText = binding.value * 10
+    });
+
+    new Vue({
+        el: '#root',
+        data: {
+            x: 10,
+            name: '自定义指令'
+        },
+        // 函数式，自定义指令
+        directives: {
+            // big(element, binding){
+            //     element.innerText = binding.value * 10
+            // },
+            fbind: {
+                // 指令与元素成功绑定时
+                bind(element, binding){
+                    element.value = binding.value
+                },
+                // 指定所在元素被插入页面时
+                inserted(element, binding){
+                    element.focus()
+                },
+                // 指定所在的模板被重新解析时
+                update(element, binding){
+                    element.value = binding.value
+                }
+            }
+        }
+    })
+</script>
+</html>
