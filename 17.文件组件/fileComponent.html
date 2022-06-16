@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>组件</title>
+</head>
+<body>
+    <!-- 
+        Vue中使用组件的三大步骤：
+        1.定义组件、创建组件
+            使用Vue.extend()创建
+                Vue.extend中不要写el绑定，因为最终所有的组件都要被vm管理，由vm中的el决定服务哪个容器；
+                data必须写成函数式，因为避免组件被复用时，数据存在引用关系。
+            使用template属性可以配置组件结构
+        2.创建组件
+            局部注册：new Vue时传入components选项
+            全部注册：Vue.component('组价名', 组件)
+        3.使用组件
+            <组件名></组件名>
+
+        
+    -->
+    <div id="root">
+        <!-- 使用组件 -->
+        <app></app>
+    </div>
+</body>
+<script type="text/javascript" src="../js/vue.js"></script>
+<script>
+    Vue.config.productionTip = false
+    
+    // 定义组件
+    const student = Vue.extend({
+        template: `
+            <div>
+                <p>学生姓名：<span>{{studentName}}</span></p>
+                <p>学生电话：<span>{{studentPhone}}</span></p>
+            </div>
+        `,
+        data() {
+            return {
+                studentName: '张三',
+                studentPhone: '17832323231'
+            }
+        }
+    })
+
+    // 定义组件
+    const school = Vue.extend({
+        template: `
+            <div>
+                <p>学校名称：<span>{{schoolName}}</span></p>
+                <p>学校地址：<span>{{schoolAddress}}</span></p>
+            </div>
+        `,
+        data() {
+            return {
+                schoolName: '北京大学',
+                schoolAddress: '北京四道口'
+            }
+        }
+    })
+
+    // 定义app组件
+    const app = Vue.extend({
+        template: `
+            <div>
+                <school></school>
+                <student></student>
+            </div>
+        `,
+        components: {
+            school: school,
+            student: student
+        }
+    })
+
+    // 全局注册
+    // Vue.component('school', school);
+    // Vue.component('student', student);
+    
+    new Vue({
+        el: '#root',
+        // 局部注册组件
+        components: {
+            app: app
+        }
+    })
+</script>
+</html>
