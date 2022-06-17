@@ -15,7 +15,7 @@ export default {
     data(){
         return {
             name: '张三',
-            name: '17832323231'
+            address: '中国上海'
         }
     }
 }
